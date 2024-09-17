@@ -28,6 +28,16 @@
         </field>
     </record>
 
+     <record id="department_search_view" model="ir.ui.view">
+        <field name="name">department.search.view</field>
+        <field name="model">hms.department</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
     <record id="hms_department_action" model="ir.actions.act_window">
         <field name="name">Departments</field>
         <field name="res_model">hms.department</field>

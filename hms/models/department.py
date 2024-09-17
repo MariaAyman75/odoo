@@ -7,4 +7,4 @@ class Department(models.Model):
     name = fields.Char()
     capacity = fields.Integer()
     is_opened = fields.Boolean(default=True)
-    patient_ids = fields.One2many('hms.patient', 'department_id', string='Patients')
+    patient_ids = fields.One2many('hms.patient', 'department_id')

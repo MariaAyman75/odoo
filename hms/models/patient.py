@@ -23,4 +23,4 @@ class Patient(models.Model):
     image = fields.Binary()
     address = fields.Text()
     age = fields.Integer()
-    department_id = fields.Many2one('hms.department', string='Department')
+    department_id = fields.Many2one('hms.department')
