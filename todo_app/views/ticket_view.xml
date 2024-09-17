@@ -17,13 +17,30 @@
         <field name="model">todo.ticket</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_new"
+                            type="object"
+                            class="btn-primary"
+                            string="New"
+                            invisible="state != 'done'"/>
+                    <button name="action_doing"
+                            type="object"
+                            class="btn-info"
+                            string="Doing"
+                            invisible="state != 'new'"/>
+                    <button name="action_done"
+                            type="object"
+                            class="btn-success"
+                            string="Done"
+                            invisible="state != 'doing'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="name"/>
                             <field name="number"/>
                             <field name="tag"/>
-                            <field name="state"/>
                         </group>
                         <group>
                             <field name="file"/>
