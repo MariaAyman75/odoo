@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from dateutil.relativedelta import relativedelta
+import re
 
 class Patient(models.Model):
     _name = 'hms.patient'
@@ -23,10 +25,11 @@ class Patient(models.Model):
     pcr = fields.Boolean()
     image = fields.Binary()
     address = fields.Text()
-    age = fields.Integer()
+    age = fields.Integer(compute='_compute_age', store=True)
     department_id = fields.Many2one('hms.department',domain=[('is_opened', '=', True)])
     doctor_ids = fields.Many2many('hms.doctor')
     department_capacity = fields.Integer(related='department_id.capacity', store=True)
+    email = fields.Char()
     state = fields.Selection([
         ('undetermined', 'Undetermined'),
         ('good', 'Good'),
@@ -63,6 +66,25 @@ class Patient(models.Model):
             'description': description,
             'date': fields.Datetime.now()
         })
+
+    _sql_constraints = [
+        ('email_unique', 'unique(email)', 'This email already exists!'),
+    ]
+
+    @api.constrains('email')
+    def _check_valid_email(self):
+        for record in self:
+            if record.email:
+                if not re.match(r"[^@]+@[^@]+\.[^@]+", record.email):
+                    raise ValidationError("Please enter a valid email address.")
+
+    @api.depends('birth_date')
+    def _compute_age(self):
+        for rec in self:
+            if rec.birth_date:
+                rec.age = relativedelta(fields.Date.today(), rec.birth_date).years
+            else:
+                rec.age = 0
 
 
 class PatientLine(models.Model):
