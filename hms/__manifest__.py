@@ -11,7 +11,7 @@
         'security/ir.model.access.csv',
         'views/base_menus.xml',
         'views/patient_view.xml',
-        'views/department_view.xml',
         'views/doctor_view.xml',
+        'views/department_view.xml',
     ]
 }

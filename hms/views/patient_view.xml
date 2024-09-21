@@ -19,23 +19,65 @@
         <field name="model">hms.patient</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_undetermined"
+                            type="object"
+                            class="btn-primary"
+                            string="Undetermined"
+                            invisible="state != 'serious'"/>
+                    <button name="action_good"
+                            type="object"
+                            class="btn-info"
+                            string="Good"
+                            invisible="state != 'undetermined'"/>
+                    <button name="action_fair"
+                            type="object"
+                            class="btn-success"
+                            string="Fair"
+                            invisible="state != 'good'"/>
+                    <button name="action_serious"
+                            type="object"
+                            class="btn-danger"
+                            string="Serious"
+                            invisible="state != 'fair'"/>
+                    <field name="state" widget="statusbar"/>
+
+                </header>
+
+
                 <sheet>
                     <group>
                          <group>
                         <field name="first_name"/>
                         <field name="last_name"/>
                         <field name="birth_date"/>
-                        <field name="age" readonly="1"/>
+                        <field name="age"/>
                         <field name="blood_type"/>
+                        <field name="history" />
                     </group>
                     <group>
                         <field name="cr_ratio"/>
                         <field name="pcr"/>
                         <field name="image" />
-                        <field name="address"/>
                         <field name="department_id"/>
+                        <field name="department_capacity" readonly="1"/>
+                        <field name="doctor_ids" widget="many2many_tags" readonly="not department_id"/>
+                    </group>
+                    <group>
+                        <field name="address"/>
                     </group>
                     </group>
+                     <notebook>
+                        <page string="Comments">
+                            <field name="patient_line_ids">
+                                <tree editable="bottom">
+                                    <field name="create_uid"/>
+                                    <field name="date"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
